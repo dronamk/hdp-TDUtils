@@ -1,0 +1,38 @@
+Package contains utilities for Teradata extract and load in Hadoop context
+
+Pre-Requisites
+Teradata Client loaded and in PATH
+Teradata authentication established
+TERADATA variables exported in a /appl/conf/$USER/global.properties set
+	TERADATA_HOST=
+	TERADATA_JDBC=
+	TERADATA_USERNAME=
+	TERADATA_PASSWORD=
+Read write privileges to Teradata established schema.tablename etc.,
+Jruby installed and path set
+Teradata JDBC libraries downloaded and PATH exported
+CLASSPATH:/usr/lib/hadoop/lib/terajdbc4.jar:/usr/lib/hadoop/lib/tdgssconfig.jar
+
+
+1) TDextractor.sh
+	Generic script to extract data out of Teradata and load to Hadoop
+	Eliminates the need for all the syntax required with FastExport.
+	Instead a simple SQL can be written and passed as argument to the TDextractor.sh script
+	Script extracts data to local unix /staging/$USER unix directory
+	and then persists to HDFS
+
+	Arguments are - SQL Script, HDFS Input Directory
+
+2) TDfload.sh
+	uses TDfload.rb in the background
+	Generic script to load data from Unix/Hadoop Access node into Teradata.
+	Script to generate a model fastload script given a table name.
+	Generation of FastLoad script is done at runtime by usng a JRuby program and JDBC access to 
+	underlying table and definition from database
+	
+	TDfload simplifies the load process by just accepting the variables such as Filename and Table to load to.
+	Other aspects can be observed by executing the script
+	Exported Teradata variables are used for execution
+
+Both scripts automatically utilize common log-functions to lo all activity to file.
+
